@@ -10,10 +10,13 @@ import android.view.View;
 import com.wxiwei.office.common.IOfficeToPicture;
 import com.wxiwei.office.constant.EventConstant;
 import com.wxiwei.office.constant.wp.WPViewConstant;
+import com.wxiwei.office.pg.control.Presentation;
 import com.wxiwei.office.res.ResKit;
 import com.wxiwei.office.system.IMainFrame;
 import com.wxiwei.office.system.MainControl;
+import com.wxiwei.office.system.beans.pagelist.APageListView;
 import com.wxiwei.office.system.beans.pagelist.IPageListViewListener;
+import com.wxiwei.office.wp.control.Word;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -118,6 +121,21 @@ public abstract class IOffice implements IMainFrame {
         }
     }
 
+    public APageListView getView() {
+        Object obj = control.getView();
+        if (obj instanceof Presentation) {
+            return ((Presentation) obj).getView().getView();
+        } else if (obj instanceof Word) {
+            return ((Word) obj).getPrintWord().getListView();
+        } else {
+            return null;
+        }
+    }
+
+    public void openFile(String filepath) {
+        getControl().openFile(filepath);
+    }
+
     /**
      * true: show message when zooming
      * false: not show message when zooming
@@ -204,7 +222,7 @@ public abstract class IOffice implements IMainFrame {
     public void changePage() {
     }
 
-    public MainControl getControl(){
+    public MainControl getControl() {
         return this.control;
     }
 
